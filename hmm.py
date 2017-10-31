@@ -136,6 +136,35 @@ def createTagTable ():
 				prev = "s"
 			else:
 				prev = tag
+
+def getCountOfTags ():
+	countTag = {}
+	for i in tags.keys():
+		countTag[i] = 0
+	for line in data:
+		if line not in ["\n" ,"\r\n"]:
+			words = line.split("\t")
+			#print len(words) ,
+			tag = words[1]
+			tag = tag.strip("\n")
+			countTag[tag] += 1
+	return countTag
+
+
+def calculateTransition ():
+	for i in transition.keys():
+		for j in transition.keys():
+			transition[i][j] = transition[i][j]/( countTag[j]+ len(transition.keys() ) ) 
+
+
+def calculateEmission ():
+	N = len(countTag) -2 
+	for i in wordTag.keys():
+		for j in wordTag[i]:
+			wordTag [i][j] += 1 
+			wordTag[i][j] /= (countTag[j] + N)
+
+
 if __name__ == "__main__":
 	file = open("Training set.txt" ,"r")
 	data = file.readlines()
