@@ -136,6 +136,34 @@ def createTagTable ():
 				prev = "s"
 			else:
 				prev = tag
+				
+#do smoothing
+def doSmoothing ():
+	for i in transition.keys():
+		for j in transition.keys():
+			transition[i][j] += 1
+
+			
+def createWordTag():
+	tokens = []
+	for i in tags.keys():
+		for  j in tags[i]:
+			tokens.append (j)
+	tokens = list (set (tokens) )
+	wordTag = {}
+	for i in tokens:
+		wordTag[i] = {}
+	for i in tokens:
+		for j in tags.keys():
+			wordTag[i][j] = 0
+	for line in data:
+		if line not in ["\n" ,"\r\n"]:
+			words = line.split("\t")
+			#print len(words) ,
+			tag = words[1]
+			tag = tag.strip("\n")
+			wordTag[words[0]][tag] += 1
+	return wordTag
 if __name__ == "__main__":
 	file = open("Training set.txt" ,"r")
 	data = file.readlines()
