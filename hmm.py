@@ -120,7 +120,22 @@ def doTest ():
 				else:
 					sentence.append(line)
 	output.close()
-	
+#Created tag table
+def createTagTable ():
+	prev = "s"
+	for line in data:
+		if line not in ["\n" ,"\r\n"]:
+			words = line.split("\t")
+			#print len(words) ,
+			tag = words[1]
+			tag = tag.strip("\n")
+			# print tag
+			# print prev
+			transition[tag][prev] += 1
+			if tag == ".":
+				prev = "s"
+			else:
+				prev = tag
 if __name__ == "__main__":
 	file = open("Training set.txt" ,"r")
 	data = file.readlines()
